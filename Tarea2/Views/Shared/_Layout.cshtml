@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
+    @Styles.Render("~/Content/css") <!-- CSS original -->
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <!-- Navbar principal -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <!-- Botón colapsable para pantallas pequeñas -->
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!-- Nombre de la aplicación -->
+                @Html.ActionLink("Inicio del sistema", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Registrar Tarea", "Nueva", "Tareas")</li>
+                    <li>@Html.ActionLink("Ver Tareas", "Lista", "Tareas")</li>
+                    <li>@Html.ActionLink("Estadísticas / Mis Tareas", "Estadistica", "Tareas")</li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    @if (!Request.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("Iniciar sesión", "Login", "Account")</li>
+                        <li>@Html.ActionLink("Registrarse", "Register", "Account")</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("Cerrar sesión", "Logout", "Account")</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido principal de la página -->
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Mi aplicación ASP.NET</p>
+        </footer>
+    </div>
+
+    <!-- Scripts originales -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+    <!-- SweetAlert para mensajes de sesión -->
+    <script>
+    $(document).ready(function() {
+        var mensajeLogin = '@Session["MensajeLogin"]';
+        if (mensajeLogin && mensajeLogin.length > 0) {
+            Swal.fire({
+                icon: 'success',
+                title: '¡Bienvenido!',
+                text: mensajeLogin,
+                confirmButtonText: 'Aceptar'
+            });
+            @{ Session.Remove("MensajeLogin"); } // <-- Aquí se corrige
+        }
+    });
+    </script>
+</body>
+</html>

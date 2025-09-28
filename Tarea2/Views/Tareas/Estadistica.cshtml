@@ -1,0 +1,49 @@
+﻿@model List<Tarea2.Models.Tarea>
+@{
+    ViewBag.Title = "Estadísticas / Mis Tareas";
+}
+
+<h2 class="mb-4">Mis Tareas y Calificaciones</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        No tienes tareas registradas todavía.
+    </div>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var tarea in Model)
+        {
+            <div class="col-md-6 col-lg-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">@tarea.Titulo</h5>
+                        <p class="card-text">@tarea.Descripcion</p>
+                        <p><strong>Promedio:</strong> @tarea.PromedioCalificacion:F1 / 5</p>
+
+                        <hr />
+                        <h6>Comentarios:</h6>
+                        @if (tarea.Calificaciones.Any())
+                        {
+                            <ul class="list-group list-group-flush flex-grow-1">
+                                @foreach (var cal in tarea.Calificaciones.OrderByDescending(c => c.Fecha))
+                                {
+                                    <li class="list-group-item">
+                                        <strong>@cal.Usuario</strong> (@cal.Fecha.ToString("dd/MM/yyyy HH:mm")): <br />
+                                        @cal.Comentario
+                                    </li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <p class="text-muted">Aún no hay comentarios.</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

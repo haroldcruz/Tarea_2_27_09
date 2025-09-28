@@ -1,0 +1,51 @@
+﻿@model Tarea2.Models.Tarea
+@{
+    ViewBag.Title = "Editar Tarea";
+}
+
+<h2>Editar Tarea</h2>
+
+@using (Html.BeginForm("Editar", "Tareas", FormMethod.Post, new { @id = "formEditar" }))
+{
+    <!-- Usamos HiddenFor para enviar el Id único de la tarea -->
+    @Html.HiddenFor(model => model.Id)
+
+    <p>
+        <label>Título:</label>
+        <input type="text" name="Titulo" value="@Model.Titulo" required class="form-control" />
+    </p>
+    <p>
+        <label>Descripción:</label>
+        <textarea name="Descripcion" required class="form-control">@Model.Descripcion</textarea>
+    </p>
+    <p>
+        <label>Lenguajes:</label>
+        <input type="text" name="Lenguajes" value="@Model.Lenguajes" required class="form-control" />
+    </p>
+    <p>
+        <label>URL del repositorio:</label>
+        <input type="url" name="UrlRepositorio" value="@Model.UrlRepositorio" required class="form-control" />
+    </p>
+    <p>
+        <label>Categoría:</label>
+        <select name="Categoria" required class="form-control">
+            <option value="Consola" @(Model.Categoria == "Consola" ? "selected" : "")>Consola</option>
+            <option value="Web" @(Model.Categoria == "Web" ? "selected" : "")>Web</option>
+            <option value="API" @(Model.Categoria == "API" ? "selected" : "")>API</option>
+        </select>
+    </p>
+    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+}
+
+@section scripts{
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        @* Solo mostrar alerta si TempData indica edición exitosa *@
+        @if(TempData["AlertaEditarTarea"] != null && (bool)TempData["AlertaEditarTarea"])
+        {
+            <text>
+            Swal.fire('Éxito', 'Tarea editada correctamente', 'success');
+            </text>
+        }
+    </script>
+}

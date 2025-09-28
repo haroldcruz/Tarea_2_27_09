@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Registro de Usuario";
+}
+
+<h2>Registro de Usuario (ficticio)</h2>
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post))
+{
+    <p>
+        <label>Usuario:</label>
+        <input type="text" name="username" required />
+    </p>
+    <p>
+        <label>Contraseña:</label>
+        <input type="password" name="password" required />
+    </p>
+    <button type="submit" class="btn btn-success">Registrar</button>
+}
+
+@if (ViewBag.Error != null)
+{
+    <p style="color:red">@ViewBag.Error</p>
+}

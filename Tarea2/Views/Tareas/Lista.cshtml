@@ -1,0 +1,154 @@
+﻿@model List<Tarea2.Models.Tarea>
+
+@{
+    ViewBag.Title = "Lista de Tareas";
+}
+
+<h2>Lista de Tareas</h2>
+
+<!-- Filtros -->
+<div id="filtros" class="mb-3">
+    <label>Categoría:</label>
+    <select id="filtroCategoria">
+        <option value="">-- Todas --</option>
+        <option value="Consola">Consola</option>
+        <option value="Web">Web</option>
+        <option value="API">API</option>
+    </select>
+
+    <label>Lenguaje:</label>
+    <select id="filtroLenguaje">
+        <option value="">-- Todos --</option>
+        <option value="C#">C#</option>
+        <option value="Java">Java</option>
+        <option value="Python">Python</option>
+        <option value="JavaScript">JavaScript</option>
+    </select>
+</div>
+
+<!-- Tabla de tareas -->
+<table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Título</th>
+            <th>Autor</th>
+            <th>Lenguajes</th>
+            <th>Categoría</th>
+            <th>Promedio</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody id="tablaTareas">
+        @foreach (var tarea in Model)
+        {
+            <tr data-categoria="@tarea.Categoria" data-lenguaje="@tarea.Lenguajes">
+                <td><a href="@Url.Action("Detalle", "Tareas", new { id = tarea.Id })">@tarea.Titulo</a></td>
+                <td>@tarea.Autor</td>
+                <td>@tarea.Lenguajes</td>
+                <td>@tarea.Categoria</td>
+                <td>@tarea.PromedioCalificacion:F1</td>
+                <td>
+                    @if (tarea.Autor == User.Identity.Name)
+                    {
+                        @Html.ActionLink("Editar", "Editar", new { id = tarea.Id }, new { @class = "btn btn-sm btn-primary" })
+                        @Html.ActionLink("Eliminar", "Eliminar", new { id = tarea.Id }, new { @class = "btn btn-sm btn-danger" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Calificar", "Calificar", new { id = tarea.Id }, new { @class = "btn btn-sm btn-success" })
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            // Restaurar filtros guardados
+            if (localStorage.getItem("filtroCategoria")) {
+                $("#filtroCategoria").val(localStorage.getItem("filtroCategoria"));
+            }
+            if (localStorage.getItem("filtroLenguaje")) {
+                $("#filtroLenguaje").val(localStorage.getItem("filtroLenguaje"));
+            }
+
+            // Función para aplicar filtros
+            function aplicarFiltros() {
+                var categoria = $("#filtroCategoria").val();
+                var lenguaje = $("#filtroLenguaje").val();
+
+                localStorage.setItem("filtroCategoria", categoria);
+                localStorage.setItem("filtroLenguaje", lenguaje);
+
+                $("#tablaTareas tr").each(function () {
+                    var cat = $(this).data("categoria");
+                    var lang = $(this).data("lenguaje");
+
+                    var mostrar = true;
+                    if (categoria && cat !== categoria) mostrar = false;
+                    if (lenguaje && lang.indexOf(lenguaje) === -1) mostrar = false;
+
+                    $(this).toggle(mostrar);
+                });
+            }
+
+            $("#filtroCategoria, #filtroLenguaje").on("change", aplicarFiltros);
+            aplicarFiltros();
+
+            // Cargar tareas recientes
+            var recientes = JSON.parse(localStorage.getItem("tareasRecientes") || "[]");
+            var $ul = $("#tareasRecientes");
+            $ul.empty();
+
+            // Resaltar tareas recientes en la tabla
+            $("#tablaTareas tr").removeClass("reciente");
+            recientes.forEach(t => {
+                $("#tablaTareas tr").each(function () {
+                    var titulo = $(this).find("td:first").text();
+                    if (titulo === t.titulo) $(this).addClass("reciente");
+                });
+            });
+
+            if (recientes.length === 0) {
+                $ul.append("<li>No has visto tareas recientemente</li>");
+            } else {
+                recientes.forEach(t => {
+                    $ul.append(`<li><a href="/Tareas/Detalle/${t.id}">${t.titulo}</a> (Autor: ${t.autor})</li>`);
+                });
+            }
+
+            // Hacer filas clicables
+            $("#tablaTareas tr").css("cursor", "pointer").click(function () {
+                var tareaId = $(this).find("td:first a, td:first").data("id") || $(this).find("td:first").text();
+                window.location.href = `/Tareas/Detalle/${tareaId}`;
+            });
+        });
+    </script>
+}
+
+
+<style>
+    /* CSS básico para la tabla */
+    .table th, .table td {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .table a {
+        text-decoration: none;
+    }
+
+    .btn-sm {
+        margin: 0 2px;
+    }
+    /* Resaltar tareas recientes */
+    #tablaTareas tr.reciente {
+        background-color: #fff8c6; /* amarillo suave */
+    }
+
+    #tablaTareas tr:hover {
+        background-color: #f0f0f0;
+    }
+</style>

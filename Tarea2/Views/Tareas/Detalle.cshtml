@@ -1,0 +1,139 @@
+﻿@model Tarea2.Models.Tarea
+
+@{
+    ViewBag.Title = "Detalle de Tarea";
+}
+
+<h2>@Model.Titulo</h2>
+
+<!-- Detalle de la tarea -->
+<div class="detalle-tarea">
+    <p><strong>Autor:</strong> @Model.Autor</p>
+    <p><strong>Descripción:</strong> @Model.Descripcion</p>
+    <p><strong>Lenguajes:</strong> @Model.Lenguajes</p>
+    <p><strong>Categoría:</strong> @Model.Categoria</p>
+    <p><strong>Repositorio:</strong> <a href="@Model.UrlRepositorio" target="_blank">@Model.UrlRepositorio</a></p>
+    <p>
+        <strong>Promedio:</strong>
+        <span id="promedio">@Model.PromedioCalificacion</span> / 5
+        <span id="estrellas">
+            @for (int i = 1; i <= 5; i++)
+            {
+                if (i <= Math.Round(Model.PromedioCalificacion))
+                {
+                    <span style="color: gold;">&#9733;</span>
+                }
+                else
+                {
+                    <span style="color: gray;">&#9734;</span>
+                }
+            }
+        </span>
+    </p>
+</div>
+
+<hr />
+
+<!-- Lista de calificaciones existentes -->
+<h3>Calificaciones</h3>
+<ul id="listaCalificaciones">
+    @if (Model.Calificaciones.Any())
+    {
+        foreach (var c in Model.Calificaciones.OrderByDescending(x => x.Fecha))
+        {
+            <li>
+                <strong>@c.Usuario</strong> (@c.Fecha.ToString("dd/MM/yyyy HH:mm")): @c.Puntuacion / 5
+                <br />@c.Comentario
+            </li>
+        }
+    }
+    else
+    {
+        <li>No hay calificaciones aún.</li>
+    }
+</ul>
+
+<!-- Formulario para calificar solo si el usuario no es el autor -->
+@if (User.Identity.Name != Model.Autor)
+{
+    <hr />
+    <h3>Agregar calificación</h3>
+    <form id="formCalificar">
+        <label>Puntuación (1-5):</label>
+        <input type="number" id="puntuacion" name="puntuacion" min="1" max="5" required />
+        <br />
+        <label>Comentario:</label>
+        <textarea id="comentario" name="comentario" required></textarea>
+        <br />
+        <button type="submit" class="btn btn-primary">Enviar calificación</button>
+    </form>
+}
+
+@section scripts{
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function () {
+
+            // Guardar la tarea vista en localStorage (tareas recientes)
+            var recientes = JSON.parse(localStorage.getItem("tareasRecientes") || "[]");
+            var tareaActual = {
+                id: '@Model.Id',
+                titulo: '@Model.Titulo',
+                autor: '@Model.Autor'
+            };
+            // Evitar duplicados
+            recientes = recientes.filter(t => t.id !== tareaActual.id);
+            recientes.unshift(tareaActual);
+            if (recientes.length > 5) recientes.pop(); // máximo 5 recientes
+            localStorage.setItem("tareasRecientes", JSON.stringify(recientes));
+
+            // Manejo del formulario de calificación vía Ajax
+            $("#formCalificar").on("submit", function (e) {
+                e.preventDefault();
+                var puntuacion = $("#puntuacion").val();
+                var comentario = $("#comentario").val();
+
+                $.post("@Url.Action("Calificar", "Tareas")", {
+                    id: '@Model.Id',
+                    puntuacion: puntuacion,
+                    comentario: comentario
+                })
+                .done(function (res) {
+                    if (res.success) {
+                        Swal.fire("Éxito", res.mensaje, "success").then(() => {
+                            location.reload(); // recarga para actualizar calificaciones y promedio
+                        });
+                    } else {
+                        Swal.fire("Error", res.mensaje, "error");
+                    }
+                })
+                .fail(function () {
+                    Swal.fire("Error", "No se pudo enviar la calificación", "error");
+                });
+            });
+        });
+    </script>
+
+    <style>
+        /* Estilos básicos para detalle y calificaciones */
+        .detalle-tarea p {
+            margin: 4px 0;
+        }
+
+        #listaCalificaciones li {
+            margin-bottom: 10px;
+            border-bottom: 1px dashed #ccc;
+            padding-bottom: 4px;
+        }
+
+        #formCalificar textarea {
+            width: 100%;
+            height: 80px;
+        }
+
+        #formCalificar input, #formCalificar textarea {
+            margin-bottom: 8px;
+        }
+    </style>
+}

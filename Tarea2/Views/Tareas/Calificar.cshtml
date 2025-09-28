@@ -1,0 +1,63 @@
+﻿@model Tarea2.Models.Tarea
+@{
+    ViewBag.Title = "Calificar Tarea";
+}
+
+<h2>Calificar Tarea</h2>
+
+<div class="card p-3 mb-3">
+    <h4>@Model.Titulo</h4>
+    <p>@Model.Descripcion</p>
+    <p><strong>Lenguajes:</strong> @Model.Lenguajes</p>
+    <p><strong>Categoría:</strong> @Model.Categoria</p>
+    <p><strong>Autor:</strong> @Model.Autor</p>
+</div>
+
+<form id="formCalificar">
+    <input type="hidden" name="id" value="@Model.Id" />
+
+    <div class="form-group">
+        <label>Puntuación (1-5):</label>
+        <input type="number" name="puntuacion" min="1" max="5"
+               value="@(ViewBag.CalificacionExistente != null ? ViewBag.CalificacionExistente.Puntuacion : 1)"
+               required class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Comentario:</label>
+        <textarea name="comentario" class="form-control" required>@(ViewBag.CalificacionExistente != null ? ViewBag.CalificacionExistente.Comentario : "")</textarea>
+    </div>
+
+    <button type="submit" class="btn btn-success">Enviar Calificación</button>
+    <a href="@Url.Action("Lista","Tareas")" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@section scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#formCalificar').submit(function(e) {
+                e.preventDefault();
+
+                var formData = $(this).serialize();
+
+                $.post('@Url.Action("Calificar","Tareas")', formData)
+                    .done(function(response) {
+                        if(response.success){
+                            Swal.fire('Éxito', response.mensaje, 'success')
+                                .then(() => {
+                                    window.location.href = '@Url.Action("Lista","Tareas")';
+                                });
+                        } else {
+                            Swal.fire('Error', response.mensaje || 'No se pudo guardar la calificación', 'error');
+                        }
+                    })
+                    .fail(function() {
+                        Swal.fire('Error', 'No se pudo conectar con el servidor', 'error');
+                    });
+            });
+        });
+    </script>
+}

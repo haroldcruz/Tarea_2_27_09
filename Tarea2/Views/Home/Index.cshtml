@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Página Principal";
+}
+
+<div class="jumbotron">
+    <h1>Bienvenido a Tareas Académicas</h1>
+    <p class="lead">Sube tus proyectos, recibe calificaciones de tus compañeros y consulta tus estadísticas de desempeño.</p>
+    <p><a href="@Url.Action("Nueva", "Tareas")" class="btn btn-primary btn-lg">Registrar Tarea &raquo;</a></p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Ver Tareas</h2>
+        <p>Consulta la lista pública de tareas disponibles, revisa las calificaciones y comentarios de tus compañeros.</p>
+        <p><a class="btn btn-default" href="@Url.Action("Lista", "Tareas")">Ir a Ver Tareas &raquo;</a></p>
+    </div>
+
+    <div class="col-md-4">
+        <h2>Estadísticas / Mis Tareas</h2>
+        <p>Revisa la puntuación promedio y comentarios destacados de tus propias tareas, y filtra por tipo de proyecto o lenguaje usado.</p>
+        <p><a class="btn btn-default" href="@Url.Action("Estadistica", "Tareas")">Ver Estadísticas &raquo;</a></p>
+    </div>
+</div>

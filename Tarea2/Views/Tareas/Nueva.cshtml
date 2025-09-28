@@ -1,0 +1,162 @@
+﻿@model Tarea2.Models.Tarea
+@{
+    ViewBag.Title = "Registrar Tarea";
+}
+
+<h2>Registrar Nueva Tarea</h2>
+
+<form id="formNueva">
+    <div class="form-group">
+        <label for="Titulo">Título <span class="text-danger">*</span></label>
+        <input id="Titulo" name="Titulo" class="form-control" maxlength="150" />
+    </div>
+
+    <div class="form-group">
+        <label for="Descripcion">Descripción <span class="text-danger">*</span></label>
+        <textarea id="Descripcion" name="Descripcion" class="form-control" rows="4"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="Lenguajes">Lenguajes (separados por comas) <span class="text-danger">*</span></label>
+        <input id="Lenguajes" name="Lenguajes" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label for="UrlRepositorio">URL del repositorio</label>
+        <input id="UrlRepositorio" name="UrlRepositorio" type="url" class="form-control" placeholder="https://github.com/usuario/repo" />
+    </div>
+
+    <div class="form-group">
+        <label for="Categoria">Categoría <span class="text-danger">*</span></label>
+        <select id="Categoria" name="Categoria" class="form-control">
+            <option value="Consola">Consola</option>
+            <option value="Web">Web</option>
+            <option value="API">API</option>
+        </select>
+    </div>
+
+    <button id="btnGuardar" type="submit" class="btn btn-primary">Registrar</button>
+    <button id="btnBorrarBorrador" type="button" class="btn btn-link">Borrar borrador</button>
+</form>
+
+@section scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+    $(function () {
+        var storageKey = 'tarea_draft_v1';
+
+        // -------------------------------
+        // Recuperar borrador al cargar
+        // -------------------------------
+        try {
+            var draftRaw = localStorage.getItem(storageKey);
+            if (draftRaw) {
+                var draft = JSON.parse(draftRaw);
+                $('#Titulo').val(draft.Titulo || '');
+                $('#Descripcion').val(draft.Descripcion || '');
+                $('#Lenguajes').val(draft.Lenguajes || '');
+                $('#UrlRepositorio').val(draft.UrlRepositorio || '');
+                $('#Categoria').val(draft.Categoria || 'Consola');
+            }
+        } catch (e) {
+            console.warn('Error leyendo borrador:', e);
+        }
+
+        // -------------------------------
+        // Guardar borrador automáticamente (debounce)
+        // -------------------------------
+        function saveDraft() {
+            var data = {
+                Titulo: $('#Titulo').val(),
+                Descripcion: $('#Descripcion').val(),
+                Lenguajes: $('#Lenguajes').val(),
+                UrlRepositorio: $('#UrlRepositorio').val(),
+                Categoria: $('#Categoria').val()
+            };
+            localStorage.setItem(storageKey, JSON.stringify(data));
+        }
+        function debounce(fn, wait) { var t; return function () { clearTimeout(t); t = setTimeout(fn, wait); }; }
+        var saveDraftDebounced = debounce(saveDraft, 400);
+        $('#Titulo, #Descripcion, #Lenguajes, #UrlRepositorio, #Categoria').on('input change', saveDraftDebounced);
+
+        // -------------------------------
+        // Borrar borrador manual
+        // -------------------------------
+        $('#btnBorrarBorrador').click(function () {
+            localStorage.removeItem(storageKey);
+            $('#Titulo,#Descripcion,#Lenguajes,#UrlRepositorio').val('');
+            $('#Categoria').val('Consola');
+            Swal.fire('Borrador', 'Borrador eliminado', 'info');
+        });
+
+        // -------------------------------
+        // Validación en el cliente
+        // -------------------------------
+        function validarCliente() {
+            var titulo = $('#Titulo').val().trim();
+            var descripcion = $('#Descripcion').val().trim();
+            var lenguajes = $('#Lenguajes').val().trim();
+            var categoria = $('#Categoria').val();
+
+            if (!titulo || !descripcion || !lenguajes || !categoria) {
+                Swal.fire('Error', 'Complete todos los campos obligatorios (marcados con *).', 'error');
+                return false;
+            }
+
+            var url = $('#UrlRepositorio').val().trim();
+            if (url) {
+                var urlPattern = /^(https?:\/\/)[^\s/$.?#].[^\s]*$/i;
+                if (!urlPattern.test(url)) {
+                    Swal.fire('Error', 'Ingrese una URL válida (incluya http(s)://).', 'error');
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // -------------------------------
+        // Enviar formulario vía AJAX
+        // -------------------------------
+        $('#formNueva').submit(function (e) {
+            e.preventDefault();
+            if (!validarCliente()) return;
+
+            $('#btnGuardar').prop('disabled', true);
+
+            var payload = {
+                Titulo: $('#Titulo').val(),
+                Descripcion: $('#Descripcion').val(),
+                Lenguajes: $('#Lenguajes').val(),
+                UrlRepositorio: $('#UrlRepositorio').val(),
+                Categoria: $('#Categoria').val()
+            };
+
+            $.ajax({
+                url: '@Url.Action("Nueva", "Tareas")',
+                type: 'POST',
+                data: payload,
+                success: function (resp) {
+                    if (resp && resp.success) {
+                        // Limpiar borrador después de guardar
+                        localStorage.removeItem(storageKey);
+                        Swal.fire('Éxito', resp.mensaje || 'Tarea creada correctamente', 'success')
+                            .then(function () {
+                                window.location.href = '@Url.Action("Lista", "Tareas")';
+                            });
+                    } else {
+                        Swal.fire('Error', resp && resp.mensaje ? resp.mensaje : 'No se pudo guardar la tarea', 'error');
+                    }
+                },
+                error: function () {
+                    Swal.fire('Error', 'Error de conexión o servidor', 'error');
+                },
+                complete: function () {
+                    $('#btnGuardar').prop('disabled', false);
+                }
+            });
+        });
+    });
+    </script>
+}
