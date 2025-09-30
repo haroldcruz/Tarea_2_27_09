@@ -4,86 +4,100 @@
     "Autor": "pedro",
     "Titulo": "NADA",
     "Descripcion": "asdas",
-    "Lenguajes": "asasas",
+    "Lenguajes": "C#, JavaScript",
     "Categoria": "Web",
-    "Calificaciones": [],
-    "UrlRepositorio": "https://copilot.microsoft.com/chats/iwy8CeF4VBwtK1M8Bz4uR",
-    "PromedioCalificacion": 0.0
+    "Calificaciones": [
+      {
+        "Usuario": "harold",
+        "Puntuacion": 5,
+        "Comentario": "tood",
+        "Fecha": "2025-09-29T19:08:28.4332146-06:00"
+      },
+      {
+        "Usuario": "pedro3",
+        "Puntuacion": 2,
+        "Comentario": "diay",
+        "Fecha": "2025-09-29T19:09:34.5371803-06:00"
+      }
+    ],
+    "UrlRepositorio": "https://repo1.com",
+    "PromedioCalificacion": 3.5
   },
   {
     "Id": "2f3a7b8c-0d4e-49a1-b2c3-9f7d6e5a4b2c",
     "Autor": "pedro2",
     "Titulo": "PERDRO 2",
     "Descripcion": "DASDASD",
-    "Lenguajes": "asasas",
+    "Lenguajes": "C#, API",
     "Categoria": "API",
     "Calificaciones": [
       {
         "Usuario": "pedro",
         "Puntuacion": 1,
-        "Comentario": "    comentario\r\n        \r\n        \r\n        ",
-        "Fecha": "2025-09-27T21:01:14.2174045-06:00"
+        "Comentario": "comentario",
+        "Fecha": "2025-09-27T21:01:14"
       },
       {
         "Usuario": "harold",
         "Puntuacion": 3,
         "Comentario": "todo bien",
-        "Fecha": "2025-09-27T21:02:03.9492122-06:00"
+        "Fecha": "2025-09-27T21:02:03"
       },
       {
         "Usuario": "pedro3",
         "Puntuacion": 5,
         "Comentario": "nada",
-        "Fecha": "2025-09-27T21:03:00.6322051-06:00"
+        "Fecha": "2025-09-27T21:03:00"
       }
     ],
-    "UrlRepositorio": "https://chatgpt.com/c/68d873d4-feb0-8327-b7e0-dad546228851",
+    "UrlRepositorio": "https://repo2.com",
     "PromedioCalificacion": 3.0
-  },
-  {
-    "Id": "d9b4e6f1-3a8c-40b9-9f1d-2c5e7a8b9c0d",
-    "Autor": "pedro",
-    "Titulo": "PERDRO ",
-    "Descripcion": "PEDRO",
-    "Lenguajes": "asasas",
-    "Categoria": "Web",
-    "Calificaciones": [
-      {
-        "Usuario": "pedro2",
-        "Puntuacion": 2,
-        "Comentario": "toido bien",
-        "Fecha": "2025-09-27T21:23:24.7830827-06:00"
-      },
-      {
-        "Usuario": "pedro3",
-        "Puntuacion": 5,
-        "Comentario": "yo ",
-        "Fecha": "2025-09-28T10:37:31.9100287-06:00"
-      }
-    ],
-    "UrlRepositorio": "https://copilot.microsoft.com/chats/iwy8CeF4VBwtK1M8Bz4uR",
-    "PromedioCalificacion": 3.5
   },
   {
     "Id": "7a1e2b3c-4d5f-6789-0abc-def123456789",
     "Autor": "pedro3",
     "Titulo": "store",
     "Descripcion": "dfsdfkksd",
-    "Lenguajes": "sdfdfgsdgfd",
+    "Lenguajes": "Python",
     "Categoria": "Web",
-    "Calificaciones": [],
-    "UrlRepositorio": "https://copilot.microsoft.com/chats/iwy8CeF4VBwtK1M8Bz4uR",
-    "PromedioCalificacion": 0.0
+    "Calificaciones": [
+      {
+        "Usuario": "pedro",
+        "Puntuacion": 5,
+        "Comentario": "todo",
+        "Fecha": "2025-09-29T17:38:08"
+      }
+    ],
+    "UrlRepositorio": "https://repo3.com",
+    "PromedioCalificacion": 5.0
   },
   {
     "Id": "8f9e0d1c-2b3a-4c5d-6e7f-0123456789ab",
     "Autor": "harold",
     "Titulo": "auutiros",
     "Descripcion": "adasdasdas",
-    "Lenguajes": "php",
+    "Lenguajes": "PHP",
     "Categoria": "Web",
     "Calificaciones": [],
-    "UrlRepositorio": "https://copilot.microsoft.com/chats/iwy8CeF4VBwtK1M8Bz4uR",
+    "UrlRepositorio": "https://repo4.com",
     "PromedioCalificacion": 0.0
+  },
+  {
+    "Id": "77d570e1-21ab-40c2-8651-ceffe0bc4112",
+    "Autor": "pedro",
+    "Titulo": "Beto",
+    "Descripcion": "Betico",
+    "Lenguajes": "PHP",
+    "Categoria": "Web",
+    "Calificaciones": [
+      {
+        "Usuario": "harold",
+        "Puntuacion": 3,
+        "Comentario": "yo siempre",
+        "Fecha": "2025-09-29T17:40:32"
+      }
+    ],
+    "UrlRepositorio": "https://repo5.com",
+    "PromedioCalificacion": 3.0
   }
 ]

@@ -3,26 +3,25 @@
     padding-bottom: 20px;
 }
 
-/* Set padding to keep content from hitting the edges */
+/* Contenido principal */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
 }
 
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
+/* Evita truncar términos en listas horizontales */
 .dl-horizontal dt {
     white-space: normal;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
+/* Ajuste de ancho máximo en formularios */
 input,
 select,
 textarea {
     max-width: 280px;
 }
-/* Estilo top para la tabla de tareas */
+
+/* Estilo para tabla de tareas */
 .table-striped {
     border-radius: 8px; /* Bordes redondeados */
     overflow: hidden; /* Para que el borde redondeado funcione */
@@ -52,4 +51,67 @@ textarea {
 
     .table-striped a.btn {
         margin-right: 5px; /* Separación entre botones */
+    }
+
+/* Panel general de estadísticas */
+.estadisticas-panel {
+    background-color: #f8f9fa;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Contenedor de tarjetas tipo grid */
+.tareas-grid {
+    display: grid;
+    gap: 20px;
+}
+
+/* Tarjeta individual de tarea */
+.tarea-card {
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Comentarios dentro de la tarjeta */
+.comentarios-list {
+    max-height: 150px;
+    overflow-y: auto;
+    padding-left: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+    .comentarios-list li {
+        padding: 5px 10px;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+/* Indicador "Ver más comentarios" */
+.text-primary {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Ajuste de columnas responsivas en grid */
+.row.g-4 {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -0.75rem;
+    margin-right: -0.75rem;
+}
+
+    .row.g-4 > .col-md-6,
+    .row.g-4 > .col-lg-4 {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+        margin-bottom: 1.5rem; /* reemplaza gap */
+        display: flex;
     }

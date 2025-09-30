@@ -64,17 +64,31 @@ namespace Tarea2.Controllers
         {
             var usuarios = LeerUsuarios();
 
+            // Validaciones mínimas
+            if (string.IsNullOrWhiteSpace(username) || username.Length < 4)
+            {
+                ViewBag.Error = "El nombre de usuario debe tener al menos 4 caracteres.";
+                return View();
+            }
+
+            if (string.IsNullOrWhiteSpace(password) || password.Length < 6)
+            {
+                ViewBag.Error = "La contraseña debe tener al menos 6 caracteres.";
+                return View();
+            }
+
             if (usuarios.Any(u => u.Username == username))
             {
-                ViewBag.Error = "El usuario ya existe";
+                ViewBag.Error = "El usuario ya existe.";
                 return View();
             }
 
             usuarios.Add(new Usuario { Username = username, Password = password });
             GuardarUsuarios(usuarios);
 
-            // Indicar que se registró exitosamente
-            TempData["RegistroExitoso"] = true;
+            // Mensaje de éxito
+            Session["MensajeLogin"] = "Registro exitoso. Ahora puedes iniciar sesión.";
+
             return RedirectToAction("Login");
         }
 
@@ -83,9 +97,16 @@ namespace Tarea2.Controllers
         [Authorize]
         public ActionResult Logout()
         {
+            // Cerrar sesión
             FormsAuthentication.SignOut();
-            return RedirectToAction("Index", "Home");
+
+            // Guardar mensaje de éxito para mostrar en Layout
+            Session["MensajeLogin"] = "Has cerrado sesión correctamente";
+
+            // Redirigir al login (o donde quieras)
+            return RedirectToAction("Login", "Account");
         }
+
     }
 
 }

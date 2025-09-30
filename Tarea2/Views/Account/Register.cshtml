@@ -2,22 +2,22 @@
     ViewBag.Title = "Registro de Usuario";
 }
 
-<h2>Registro de Usuario (ficticio)</h2>
+<h2>Registro de Usuario</h2>
 
 @using (Html.BeginForm("Register", "Account", FormMethod.Post))
 {
     <p>
         <label>Usuario:</label>
-        <input type="text" name="username" required />
+        <input type="text" name="username" required minlength="4" />
     </p>
     <p>
         <label>Contraseña:</label>
-        <input type="password" name="password" required />
+        <input type="password" name="password" required minlength="6" />
     </p>
     <button type="submit" class="btn btn-success">Registrar</button>
 }
 
 @if (ViewBag.Error != null)
 {
-    <p style="color:red">@ViewBag.Error</p>
+    <div style="color:red">@ViewBag.Error</div>
 }

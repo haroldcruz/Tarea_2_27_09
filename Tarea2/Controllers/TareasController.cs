@@ -178,6 +178,9 @@ namespace Tarea2.Controllers
                 });
             }
 
+            // --- NUEVO: recalcular promedio ---
+            tarea.PromedioCalificacion = tarea.Calificaciones.Average(c => c.Puntuacion);
+
             GuardarTareas(tareas);
 
             return Json(new { success = true, mensaje = "Calificación guardada correctamente" });

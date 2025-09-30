@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
-    @Styles.Render("~/Content/css") <!-- CSS original -->
+
+    @Styles.Render("~/Content/css") <!-- Mantiene tu CSS -->
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
@@ -13,13 +13,11 @@
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <!-- Botón colapsable para pantallas pequeñas -->
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <!-- Nombre de la aplicación -->
                 @Html.ActionLink("Inicio del sistema", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
 
@@ -45,7 +43,7 @@
         </div>
     </div>
 
-    <!-- Contenido principal de la página -->
+    <!-- Contenido principal -->
     <div class="container body-content">
         @RenderBody()
         <hr />
@@ -59,20 +57,43 @@
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 
-    <!-- SweetAlert para mensajes de sesión -->
+    <!-- Toast de mensajes de login -->
     <script>
-    $(document).ready(function() {
-        var mensajeLogin = '@Session["MensajeLogin"]';
-        if (mensajeLogin && mensajeLogin.length > 0) {
-            Swal.fire({
-                icon: 'success',
-                title: '¡Bienvenido!',
-                text: mensajeLogin,
-                confirmButtonText: 'Aceptar'
-            });
-            @{ Session.Remove("MensajeLogin"); } // <-- Aquí se corrige
-        }
-    });
+        $(document).ready(function() {
+            // Función para mostrar toast
+            function mostrarToast(mensaje, tipo) {
+                var toast = document.createElement('div');
+                toast.textContent = mensaje;
+                toast.style.position = 'fixed';
+                toast.style.top = '20px';
+                toast.style.right = '20px';
+                toast.style.padding = '10px 20px';
+                toast.style.borderRadius = '5px';
+                toast.style.boxShadow = '0 2px 5px rgba(0,0,0,0.3)';
+                toast.style.zIndex = '9999';
+                toast.style.color = '#fff';
+                toast.style.backgroundColor = tipo === "success" ? "#28a745" : "#dc3545";
+                document.body.appendChild(toast);
+
+                setTimeout(function() {
+                    toast.remove();
+                }, 3000);
+            }
+
+            // Mensaje de éxito
+            var mensajeExito = @Html.Raw(Json.Encode(Session["MensajeLogin"]));
+            if (mensajeExito) {
+                mostrarToast(mensajeExito, "success");
+                @{ Session.Remove("MensajeLogin"); }
+            }
+
+            // Mensaje de error
+            var mensajeError = @Html.Raw(Json.Encode(TempData["LoginError"]));
+            if (mensajeError) {
+                mostrarToast(mensajeError, "error");
+                // TempData se limpia automáticamente después de leerse
+            }
+        });
     </script>
 </body>
 </html>

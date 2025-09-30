@@ -2,10 +2,9 @@
     ViewBag.Title = "Login";
 }
 
-<h2>Página de Login (ficticia)</h2>
+<h2>Página de Login</h2>
 <p>Este formulario aún no tiene lógica real, solo sirve para probar navegación y enlaces.</p>
 
-<!-- Enlace para simular login exitoso -->
 @using (Html.BeginForm("Login", "Account", FormMethod.Post))
 {
     <p>
@@ -16,47 +15,5 @@
         <label>Contraseña:</label>
         <input type="password" name="password" />
     </p>
-    <button type="submit" class="btn btn-primary">Simular Login</button>
-}
-@section scripts{
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        @* Login exitoso *@
-        @if (TempData["LoginExitoso"] != null && (bool)TempData["LoginExitoso"])
-        {
-            <text>
-            Swal.fire({
-                icon: 'success',
-                title: '¡Bienvenido!',
-                text: 'Inicio de sesión exitoso',
-                confirmButtonText: 'Aceptar'
-            });
-            </text>
-        }
-
-        @* Error de login *@
-        @if (TempData["LoginError"] != null)
-        {
-            <text>
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: '@TempData["LoginError"]',
-                confirmButtonText: 'Aceptar'
-            });
-            </text>
-        }
-           // Mostrar alerta si el registro fue exitoso
-        @if (TempData["RegistroExitoso"] != null && (bool)TempData["RegistroExitoso"])
-        {
-            <text>
-            Swal.fire({
-                icon: 'success',
-                title: 'Registro exitoso',
-                text: 'Usuario creado correctamente. Ahora puede iniciar sesión.',
-                confirmButtonText: 'Aceptar'
-            });
-            </text>
-        }
-    </script>
+    <button type="submit" class="btn btn-primary">Loguearse</button>
 }

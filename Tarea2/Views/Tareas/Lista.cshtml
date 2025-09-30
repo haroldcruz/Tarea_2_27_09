@@ -46,7 +46,7 @@
                 <td>@tarea.Autor</td>
                 <td>@tarea.Lenguajes</td>
                 <td>@tarea.Categoria</td>
-                <td>@tarea.PromedioCalificacion:F1</td>
+                <td>@tarea.PromedioCalificacion: de 5</td>
                 <td>
                     @if (tarea.Autor == User.Identity.Name)
                     {
@@ -125,14 +125,35 @@
                 window.location.href = `/Tareas/Detalle/${tareaId}`;
             });
         });
+        // confirma eliminación
+        $(document).on("click", ".eliminar-tarea", function (e) {
+            e.preventDefault();
+            var url = $(this).attr("href");
+
+            Swal.fire({
+                title: "¿Estás seguro?",
+                text: "Esta acción no se puede deshacer.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Sí, eliminar",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = url;
+                }
+            });
+        });
     </script>
+
 }
 
 
 <style>
     /* CSS básico para la tabla */
     .table th, .table td {
-        text-align: center;
+        text-align: left;
         vertical-align: middle;
     }
 
