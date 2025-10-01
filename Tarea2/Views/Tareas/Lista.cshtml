@@ -42,7 +42,11 @@
         @foreach (var tarea in Model)
         {
             <tr data-categoria="@tarea.Categoria" data-lenguaje="@tarea.Lenguajes">
-                <td><a href="@Url.Action("Detalle", "Tareas", new { id = tarea.Id })">@tarea.Titulo</a></td>
+                <td>
+                    <a href="@Url.Action("Detalle", "Tareas", new { id = tarea.Id })" data-id="@tarea.Id">
+                        @tarea.Titulo
+                    </a>
+                </td>
                 <td>@tarea.Autor</td>
                 <td>@tarea.Lenguajes</td>
                 <td>@tarea.Categoria</td>
@@ -51,7 +55,7 @@
                     @if (tarea.Autor == User.Identity.Name)
                     {
                         @Html.ActionLink("Editar", "Editar", new { id = tarea.Id }, new { @class = "btn btn-sm btn-primary" })
-                        @Html.ActionLink("Eliminar", "Eliminar", new { id = tarea.Id }, new { @class = "btn btn-sm btn-danger" })
+                        @Html.ActionLink("Eliminar", "Eliminar", new { id = tarea.Id }, new { @class = "btn btn-sm btn-danger eliminar-tarea" })
                     }
                     else
                     {
@@ -60,9 +64,10 @@
                 </td>
             </tr>
         }
+
     </tbody>
 </table>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @section scripts {
     <script>
         $(document).ready(function () {
@@ -106,7 +111,7 @@
             $("#tablaTareas tr").removeClass("reciente");
             recientes.forEach(t => {
                 $("#tablaTareas tr").each(function () {
-                    var titulo = $(this).find("td:first").text();
+                    var titulo = $(this).find("td:first a").text();
                     if (titulo === t.titulo) $(this).addClass("reciente");
                 });
             });
@@ -120,12 +125,18 @@
             }
 
             // Hacer filas clicables
-            $("#tablaTareas tr").css("cursor", "pointer").click(function () {
-                var tareaId = $(this).find("td:first a, td:first").data("id") || $(this).find("td:first").text();
-                window.location.href = `/Tareas/Detalle/${tareaId}`;
+            $("#tablaTareas tr").css("cursor", "pointer").click(function (e) {
+                // Evitar que el clic en enlaces o botones dispare la fila
+                if ($(e.target).closest("a, .btn").length) return;
+
+                var tareaId = $(this).find("td:first a").data("id");
+                if (tareaId) {
+                    window.location.href = `/Tareas/Detalle/${tareaId}`;
+                }
             });
         });
-        // confirma eliminación
+
+        // Confirma eliminación con SweetAlert
         $(document).on("click", ".eliminar-tarea", function (e) {
             e.preventDefault();
             var url = $(this).attr("href");
@@ -146,9 +157,7 @@
             });
         });
     </script>
-
 }
-
 
 <style>
     /* CSS básico para la tabla */
@@ -164,6 +173,7 @@
     .btn-sm {
         margin: 0 2px;
     }
+
     /* Resaltar tareas recientes */
     #tablaTareas tr.reciente {
         background-color: #fff8c6; /* amarillo suave */

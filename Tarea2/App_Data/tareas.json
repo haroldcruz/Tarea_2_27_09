@@ -1,29 +1,5 @@
 [
   {
-    "Id": "c6f0a2b3-9e7d-4a1f-8c2b-0d3e4f5a6b7c",
-    "Autor": "pedro",
-    "Titulo": "NADA",
-    "Descripcion": "asdas",
-    "Lenguajes": "C#, JavaScript",
-    "Categoria": "Web",
-    "Calificaciones": [
-      {
-        "Usuario": "harold",
-        "Puntuacion": 5,
-        "Comentario": "tood",
-        "Fecha": "2025-09-29T19:08:28.4332146-06:00"
-      },
-      {
-        "Usuario": "pedro3",
-        "Puntuacion": 2,
-        "Comentario": "diay",
-        "Fecha": "2025-09-29T19:09:34.5371803-06:00"
-      }
-    ],
-    "UrlRepositorio": "https://repo1.com",
-    "PromedioCalificacion": 3.5
-  },
-  {
     "Id": "2f3a7b8c-0d4e-49a1-b2c3-9f7d6e5a4b2c",
     "Autor": "pedro2",
     "Titulo": "PERDRO 2",
@@ -33,9 +9,9 @@
     "Calificaciones": [
       {
         "Usuario": "pedro",
-        "Puntuacion": 1,
+        "Puntuacion": 4,
         "Comentario": "comentario",
-        "Fecha": "2025-09-27T21:01:14"
+        "Fecha": "2025-09-29T20:57:55.8659971-06:00"
       },
       {
         "Usuario": "harold",
@@ -51,7 +27,7 @@
       }
     ],
     "UrlRepositorio": "https://repo2.com",
-    "PromedioCalificacion": 3.0
+    "PromedioCalificacion": 4.0
   },
   {
     "Id": "7a1e2b3c-4d5f-6789-0abc-def123456789",
@@ -78,26 +54,51 @@
     "Descripcion": "adasdasdas",
     "Lenguajes": "PHP",
     "Categoria": "Web",
-    "Calificaciones": [],
-    "UrlRepositorio": "https://repo4.com",
-    "PromedioCalificacion": 0.0
-  },
-  {
-    "Id": "77d570e1-21ab-40c2-8651-ceffe0bc4112",
-    "Autor": "pedro",
-    "Titulo": "Beto",
-    "Descripcion": "Betico",
-    "Lenguajes": "PHP",
-    "Categoria": "Web",
     "Calificaciones": [
       {
-        "Usuario": "harold",
+        "Usuario": "pedro",
         "Puntuacion": 3,
-        "Comentario": "yo siempre",
-        "Fecha": "2025-09-29T17:40:32"
+        "Comentario": "pedro",
+        "Fecha": "2025-09-30T21:08:16.4454549-06:00"
       }
     ],
-    "UrlRepositorio": "https://repo5.com",
+    "UrlRepositorio": "https://repo4.com",
     "PromedioCalificacion": 3.0
+  },
+  {
+    "Id": "1e3eca29-b1a7-4971-8ae0-51cf0aa1c897",
+    "Autor": "harold",
+    "Titulo": "tareas",
+    "Descripcion": "trareas ejemplo",
+    "Lenguajes": "java",
+    "Categoria": "API",
+    "Calificaciones": [
+      {
+        "Usuario": "pedro",
+        "Puntuacion": 4,
+        "Comentario": "pedro otras vez",
+        "Fecha": "2025-09-30T21:08:30.3927216-06:00"
+      }
+    ],
+    "UrlRepositorio": "https://copilot.microsoft.com/chats/iwy8CeF4VBwtK1M8Bz4uR",
+    "PromedioCalificacion": 4.0
+  },
+  {
+    "Id": "a01b0865-9f14-4f0c-9ba1-97d9e1d6a352",
+    "Autor": "harold",
+    "Titulo": "tercera",
+    "Descripcion": "tercera tareas",
+    "Lenguajes": "vb.ne",
+    "Categoria": "Consola",
+    "Calificaciones": [
+      {
+        "Usuario": "pedro",
+        "Puntuacion": 5,
+        "Comentario": "pedrisimo",
+        "Fecha": "2025-09-30T21:08:42.4583879-06:00"
+      }
+    ],
+    "UrlRepositorio": null,
+    "PromedioCalificacion": 5.0
   }
 ]
